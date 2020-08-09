@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import MarkImage
-from django.urls import reverse
-from django.views.generic import CreateView, ListView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.conf import settings
 from PIL import Image
 from PIL.ImageStat import Stat
@@ -20,6 +20,10 @@ class ImageUpdateView(UpdateView):
 class ImageCreateView(CreateView):
     model = MarkImage
     fields = ['src', 'hpos_rel', 'vpos_rel',]
+
+class ImageDeleteView(DeleteView):
+    model = MarkImage
+    success_url = reverse_lazy('index')
 
 
 def highres(request, image_id, marked=True):

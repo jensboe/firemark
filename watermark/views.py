@@ -31,14 +31,16 @@ class ImageDeleteView(DeleteView):
 
 def viewImg(request, image_id, marked=True):
     image = get_object_or_404(MarkImage, pk=image_id)
+    if not os.path.exists(f"{settings.MEDIA_ROOT}wm\\cache\\"):
+        os.mkdir(f"{settings.MEDIA_ROOT}wm\\cache\\")
     try:
         if marked:
             cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.hpos_rel}-{image.vpos_rel}-{image.proportion}-{image.border}.jpg"
             if not os.path.exists(cachename):
                 with Image.open(settings.MEDIA_ROOT + image.src.name) as org:
                     with Image.open(settings.MEDIA_ROOT + 'wm/wm/feuerwehr_blau.png') as wm:
-                        wm = wm_resize(org, wm, image.proportion)
-                        target_pos = wm_pos(org, wm, image.border, float(image.hpos_rel/100), float(image.vpos_rel/100)) 
+                        wm = wm_resize(org, wm, float(image.proportion/100))
+                        target_pos = wm_pos(org, wm, float(image.border/100), float(image.hpos_rel/100), float(image.vpos_rel/100)) 
 
                         #create new image with alpha channel (transparent)
                         result = Image.new('RGBA', org.size)

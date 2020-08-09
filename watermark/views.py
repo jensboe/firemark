@@ -17,6 +17,10 @@ class ImageUpdateView(UpdateView):
     model = MarkImage
     fields = ['hpos_rel', 'vpos_rel']
 
+class ImageCreateView(CreateView):
+    model = MarkImage
+    fields = ['src', 'hpos_rel', 'vpos_rel',]
+
 
 def highres(request, image_id, marked=True):
     image = get_object_or_404(MarkImage, pk=image_id)
@@ -28,7 +32,3 @@ def highres(request, image_id, marked=True):
         response = HttpResponse(content_type="image/jpeg")
         red.save(response, "JPEG")
         return response
-def update(request, image_id):
-    
-    markimage = get_object_or_404(MarkImage, pk=image_id)
-    return HttpResponseRedirect(reverse('index'))

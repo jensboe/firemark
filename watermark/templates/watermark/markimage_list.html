@@ -2,6 +2,7 @@
 {% load i18n %} 
 
 {% block content %}
+<a href="{% url 'create'%}" class="btn btn-primary">{% trans "Create new watermark image" %}</a>
 {% if imagelist %}
 <div class="row">
     {% for image in imagelist %}

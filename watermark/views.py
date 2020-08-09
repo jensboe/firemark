@@ -18,11 +18,11 @@ class IndexView(ListView):
 
 class ImageUpdateView(UpdateView):
     model = MarkImage
-    fields = ['hpos_rel', 'vpos_rel', 'border', 'proportion']
+    fields = ['wm', 'hpos_rel', 'vpos_rel', 'border', 'proportion']
 
 class ImageCreateView(CreateView):
     model = MarkImage
-    fields = ['src', 'hpos_rel', 'vpos_rel', 'border', 'proportion']
+    fields = ['wm', 'src', 'hpos_rel', 'vpos_rel', 'border', 'proportion']
 
 class ImageDeleteView(DeleteView):
     model = MarkImage
@@ -35,10 +35,10 @@ def viewImg(request, image_id, marked=True):
         os.mkdir(f"{settings.MEDIA_ROOT}wm\\cache\\")
     try:
         if marked:
-            cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.hpos_rel}-{image.vpos_rel}-{image.proportion}-{image.border}.jpg"
+            cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.wm.id}-{image.hpos_rel}-{image.vpos_rel}-{image.proportion}-{image.border}.jpg"
             if not os.path.exists(cachename):
                 with Image.open(settings.MEDIA_ROOT + image.src.name) as org:
-                    with Image.open(settings.MEDIA_ROOT + 'wm/wm/feuerwehr_blau.png') as wm:
+                    with Image.open(settings.MEDIA_ROOT + image.wm.src.name) as wm:
                         wm = wm_resize(org, wm, float(image.proportion/100))
                         target_pos = wm_pos(org, wm, float(image.border/100), float(image.hpos_rel/100), float(image.vpos_rel/100)) 
 

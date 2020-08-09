@@ -18,11 +18,11 @@ class IndexView(ListView):
 
 class ImageUpdateView(UpdateView):
     model = MarkImage
-    fields = ['hpos_rel', 'vpos_rel']
+    fields = ['hpos_rel', 'vpos_rel', 'border', 'proportion']
 
 class ImageCreateView(CreateView):
     model = MarkImage
-    fields = ['src', 'hpos_rel', 'vpos_rel',]
+    fields = ['src', 'hpos_rel', 'vpos_rel', 'border', 'proportion']
 
 class ImageDeleteView(DeleteView):
     model = MarkImage
@@ -33,18 +33,12 @@ def viewImg(request, image_id, marked=True):
     image = get_object_or_404(MarkImage, pk=image_id)
     try:
         if marked:
-            #how much area will be watermarked
-            wm_proportion = 0.05
-            #space to border (proportion: hight of wm)
-            wm_border = .25
-            cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.hpos_rel}-{image.vpos_rel}-{wm_proportion}-{wm_border}.jpg"
+            cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.hpos_rel}-{image.vpos_rel}-{image.proportion}-{image.border}.jpg"
             if not os.path.exists(cachename):
                 with Image.open(settings.MEDIA_ROOT + image.src.name) as org:
                     with Image.open(settings.MEDIA_ROOT + 'wm/wm/feuerwehr_blau.png') as wm:
-
-
-                        wm = wm_resize(org, wm, wm_proportion)
-                        target_pos = wm_pos(org, wm, wm_border, float(image.hpos_rel/100), float(image.vpos_rel/100)) 
+                        wm = wm_resize(org, wm, image.proportion)
+                        target_pos = wm_pos(org, wm, image.border, float(image.hpos_rel/100), float(image.vpos_rel/100)) 
 
                         #create new image with alpha channel (transparent)
                         result = Image.new('RGBA', org.size)

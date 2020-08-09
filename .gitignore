@@ -2,3 +2,7 @@ results
 watermarks/feuerwehr_blau.png
 selected.jpg
 original.jpg
+
+__pycache__
+db.sqlite3
+media/

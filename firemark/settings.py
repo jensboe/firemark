@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'firemark.jb',
     'jensb.dynv6.net'
+
 ]
 
 # Application definition

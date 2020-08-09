@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+
+{% block content %}
+{% if imagelist %}
+<div class="row">
+    {% for image in imagelist %}
+    <div class="col-sm-6">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="{{image.src.url}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{image}}</h5>
+                <p class="card-text">{% trans "Postion" %}{{image.hpos_rel}} {{image.vpos_rel}}</p>
+                <p class="card-text">{% trans "Created" %}{{image.created}}</p>
+                <p class="card-text">{% trans "Modified" %}{{image.modified}}</p>
+                <a href="{% url 'edit' image.id %}" class="btn btn-primary">{% trans "Edit" %}</a>
+                <a href="{% url 'img' image.id %}" class="btn btn-primary" download>{% trans "Download marked" %}</a>
+                <a href="{% url 'img' image.id %}" class="btn btn-primary" download>{% trans "Download raw" %}</a>
+            </div>
+        </div>  
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p>{% trans "No images are available." %}</p>
+{% endif %}
+
+{% endblock %}

@@ -13,7 +13,7 @@
                 <p class="card-text">{% trans "Postion" %}{{image.hpos_rel}} {{image.vpos_rel}}</p>
                 <p class="card-text">{% trans "Created" %}{{image.created}}</p>
                 <p class="card-text">{% trans "Modified" %}{{image.modified}}</p>
-                <a href="{% url 'edit' image.id %}" class="btn btn-primary">{% trans "Edit" %}</a>
+                <a href="{% url 'update' image.id %}" class="btn btn-primary">{% trans "update" %}</a>
                 <a href="{% url 'img' image.id %}" class="btn btn-primary" download>{% trans "Download marked" %}</a>
                 <a href="{% url 'img' image.id %}" class="btn btn-primary" download>{% trans "Download raw" %}</a>
             </div>

@@ -25,8 +25,10 @@ SECRET_KEY = 'lgdog1ygpzbsw0^c5cjqelmoh0trmmp@ssrt-(z+g_1r9u0h9%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    'firemark.jb',
+    'jensb.dynv6.net'
+]
 
 # Application definition
 

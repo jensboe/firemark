@@ -1,13 +1,8 @@
 version: '3'
     
 services:
-  db:
-    image: postgres
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
   web:
+    name: firemark
     build: .
     image: jensb91/www
     command: python manage.py runserver 0.0.0.0:80
@@ -16,5 +11,3 @@ services:
       - .:/code
     ports:
       - "80:80"
-    depends_on:
-      - db

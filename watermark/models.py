@@ -19,5 +19,7 @@ class MarkImage(models.Model):
         return reverse("index")
 
 class Watermark(models.Model):
-    originalimage = models.ImageField(upload_to='wm/wm')
+    src = models.ImageField(upload_to='wm/wm')
 
+    def __str__(self):
+        return os.path.basename(self.src.name)

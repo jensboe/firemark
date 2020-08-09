@@ -26,9 +26,10 @@ SECRET_KEY = 'lgdog1ygpzbsw0^c5cjqelmoh0trmmp@ssrt-(z+g_1r9u0h9%'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
     'firemark.jb',
     'jensb.dynv6.net'
-
 ]
 
 # Application definition

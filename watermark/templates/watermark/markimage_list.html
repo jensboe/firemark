@@ -14,9 +14,11 @@
                 <p class="card-text">{% trans "Postion" %}{{image.hpos_rel}} {{image.vpos_rel}}</p>
                 <p class="card-text">{% trans "Created" %}{{image.created}}</p>
                 <p class="card-text">{% trans "Modified" %}{{image.modified}}</p>
-                <a href="{% url 'update' image.id %}" class="btn btn-primary">{% trans "update" %}</a>
-                <a href="{% url 'delete' image.id %}" class="btn btn-primary">{% trans "delete" %}</a>
-                <a href="{% url 'img' image.id %}" class="btn btn-primary" download>{% trans "Download marked" %}</a>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a class="btn btn-primary" role="button" href="{% url 'update' image.id %}">{% trans "update" %}</a>
+                    <a class="btn btn-primary" role="button" href="{% url 'delete' image.id %}">{% trans "delete" %}</a>
+                    <a class="btn btn-primary" role="button" href="{% url 'img' image.id %}" download>{% trans "Download" %}</a>
+                </div>
             </div>
         </div>  
     </div>

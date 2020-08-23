@@ -29,7 +29,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     'firemark.jb',
-    'jensb.dynv6.net'
+    'jensb.dynv6.net',
+    'jensb.pythonanywhere.com'
 ]
 
 # Application definition

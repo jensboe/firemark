@@ -30,7 +30,7 @@ ALLOWED_HOSTS = [
     '172.18.0.4',
     'localhost',
     'firemark.jb',
-    'jensb.dynv6.net',
+    'firemark.jensb.dynv6.net',
     'jensb.pythonanywhere.com'
 ]
 

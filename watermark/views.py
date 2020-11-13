@@ -35,8 +35,8 @@ def viewImg(request, image_id, marked=True):
         os.mkdir(f"{settings.MEDIA_ROOT}wm\\cache\\")
     try:
         if marked:
-            cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.wm.id}-{image.hpos_rel}-{image.vpos_rel}-{image.proportion}-{image.border}.jpg"
-            if not os.path.exists(cachename):
+            cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.wm.id}-{image.halign}-{image.valign}-{image.proportion}-{image.border}.jpg"
+            if not os.path.exists(cachename) or True:
                 with Image.open(settings.MEDIA_ROOT + image.src.name) as org:
 
                     # Do EXIF rotations
@@ -44,7 +44,21 @@ def viewImg(request, image_id, marked=True):
 
                     with Image.open(settings.MEDIA_ROOT + image.wm.src.name) as wm:
                         wm = wm_resize(org, wm, float(image.proportion/100))
-                        target_pos = wm_pos(org, wm, float(image.border/100), float(image.hpos_rel/100), float(image.vpos_rel/100)) 
+                        hpos_rel = 0
+                        if image.halign in MarkImage.HorizontalAlign.LEFT:
+                            hpos_rel = 0
+                        if image.halign in MarkImage.HorizontalAlign.CENTER:
+                            hpos_rel = 50
+                        if image.halign in MarkImage.HorizontalAlign.RIGHT:
+                            hpos_rel = 100
+                        vpos_rel = 0
+                        if image.valign in MarkImage.VerticalAlign.TOP:
+                            vpos_rel = 0
+                        if image.valign in MarkImage.VerticalAlign.CENTER:
+                            vpos_rel = 50
+                        if image.valign in MarkImage.VerticalAlign.BOTTOM:
+                            vpos_rel = 100
+                        target_pos = wm_pos(org, wm, float(image.border/100), float(hpos_rel/100), float(vpos_rel/100)) 
 
                         #create new image with alpha channel (transparent)
                         result = Image.new('RGBA', org.size)

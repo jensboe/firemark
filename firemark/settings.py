@@ -27,11 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    '172.18.0.4',
     'localhost',
-    'firemark.jb',
-    'firemark.jensb.dynv6.net',
-    'jensb.pythonanywhere.com'
 ]
 
 # Application definition

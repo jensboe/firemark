@@ -10,10 +10,6 @@
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="{% url 'img' image.id %}" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">{{image}}</h5>
-                <p class="card-text">{% trans "Postion" %}{{image.hpos_rel}} {{image.vpos_rel}}</p>
-                <p class="card-text">{% trans "Created" %}{{image.created}}</p>
-                <p class="card-text">{% trans "Modified" %}{{image.modified}}</p>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <a class="btn btn-primary" role="button" href="{% url 'update' image.id %}">{% trans "update" %}</a>
                     <a class="btn btn-primary" role="button" href="{% url 'delete' image.id %}">{% trans "delete" %}</a>

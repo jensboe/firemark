@@ -4,7 +4,7 @@ from .models import MarkImage
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.conf import settings
-from PIL import Image
+from PIL import Image, ImageOps
 from PIL.ImageStat import Stat
 import os
 
@@ -38,6 +38,10 @@ def viewImg(request, image_id, marked=True):
             cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.wm.id}-{image.hpos_rel}-{image.vpos_rel}-{image.proportion}-{image.border}.jpg"
             if not os.path.exists(cachename):
                 with Image.open(settings.MEDIA_ROOT + image.src.name) as org:
+
+                    # Do EXIF rotations
+                    org = ImageOps.exif_transpose(org)
+
                     with Image.open(settings.MEDIA_ROOT + image.wm.src.name) as wm:
                         wm = wm_resize(org, wm, float(image.proportion/100))
                         target_pos = wm_pos(org, wm, float(image.border/100), float(image.hpos_rel/100), float(image.vpos_rel/100)) 

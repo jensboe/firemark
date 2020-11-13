@@ -27,13 +27,13 @@ class MarkImage(models.Model):
     src = models.ImageField(
         upload_to = 'wm/org',
         verbose_name = _('Image'),
-        help_text = _('Select image what should be watermarked.')
+        help_text = _('Select image which should be watermarked.')
     )
-    created = models.DateTimeField(
+    upload_time = models.DateTimeField(
         auto_now_add = True,
-        verbose_name = _('creation time')
+        verbose_name = _('upload time')
     )
-    modified = models.DateTimeField(
+    modifiy_time = models.DateTimeField(
         auto_now = True,
         verbose_name = _('modification time')
     )
@@ -42,7 +42,7 @@ class MarkImage(models.Model):
         max_digits = 3,
         default = 5,
         verbose_name=_('proportion'),
-        help_text=_('Change propotion between image and watermark. Default is 5.')
+        help_text=_('Propotion between image and watermark. Default is 5.')
     )
     border = models.DecimalField(
         decimal_places = 0,

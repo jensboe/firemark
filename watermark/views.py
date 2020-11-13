@@ -18,11 +18,11 @@ class IndexView(ListView):
 
 class ImageUpdateView(UpdateView):
     model = MarkImage
-    fields = ['wm', 'hpos_rel', 'vpos_rel', 'border', 'proportion']
+    fields = ['wm', 'valign', 'halign', 'border', 'proportion']
 
 class ImageCreateView(CreateView):
     model = MarkImage
-    fields = ['wm', 'src', 'hpos_rel', 'vpos_rel', 'border', 'proportion']
+    fields = ['src', 'wm', 'valign', 'halign', 'border', 'proportion']
 
 class ImageDeleteView(DeleteView):
     model = MarkImage

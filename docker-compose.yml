@@ -8,6 +8,7 @@ services:
     command: python manage.py runserver 0.0.0.0:80
     entrypoint: ["python", "manage.py", "runserver", "80"]
     volumes:
-      - .:/code
+      - media:/media
+      - db:/db
     ports:
       - "80:80"

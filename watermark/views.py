@@ -12,9 +12,9 @@ from .utils import wm_resize, wm_pos
 
 class IndexView(ListView):
     context_object_name = 'imagelist'
-
-    def get_queryset(self):
-        return MarkImage.objects.all()
+    model = MarkImage
+    paginate_by = 9
+    ordering = ['-upload_time']
 
 class ImageUpdateView(UpdateView):
     model = MarkImage

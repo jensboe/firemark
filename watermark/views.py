@@ -36,7 +36,7 @@ def viewImg(request, image_id, marked=True):
     try:
         if marked:
             cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.wm.id}-{image.halign}-{image.valign}-{image.proportion}-{image.border}.jpg"
-            if not os.path.exists(cachename) or True:
+            if not os.path.exists(cachename):
                 with Image.open(settings.MEDIA_ROOT + image.src.name) as org:
 
                     # Do EXIF rotations

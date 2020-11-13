@@ -2,13 +2,11 @@ version: '3'
     
 services:
   web:
-    name: firemark
     build: .
-    image: jensb91/www
-    command: python manage.py runserver 0.0.0.0:80
-    entrypoint: ["python", "manage.py", "runserver", "80"]
+    image: firemark/www
+    command: python3 manage.py runserver 0.0.0.0:80
     volumes:
-      - media:/media
-      - db:/db
+      - .:/media
+      - .:/db
     ports:
       - "80:80"

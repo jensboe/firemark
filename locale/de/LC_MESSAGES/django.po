@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 19:01+0100\n"
+"POT-Creation-Date: 2020-11-27 19:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,8 +96,6 @@ msgid "Title"
 msgstr "Wasserzeichengenerator"
 
 #: .\watermark\templates\base.html:19
-#, fuzzy
-#| msgid "New Image"
 msgid "Add new Image"
 msgstr "Neues Bild hinzufügen"
 

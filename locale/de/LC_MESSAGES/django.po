@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-13 21:29+0100\n"
+"POT-Creation-Date: 2020-11-27 19:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,38 +91,45 @@ msgstr "Wasserzeichen"
 msgid "Embedded watermark inside the image."
 msgstr "Eingebettest Wasserzeichen im Bild"
 
-#: .\watermark\templates\base.html:8 .\watermark\templates\base.html:14
+#: .\watermark\templates\base.html:8
 msgid "Title"
 msgstr "Wasserzeichengenerator"
 
-#: .\watermark\templates\watermark\markimage_list.html:5
-msgid "Create new watermark image"
-msgstr "Wasserzeichen erstellen"
+#: .\watermark\templates\base.html:19
+#, fuzzy
+#| msgid "New Image"
+msgid "Add new Image"
+msgstr "Neues Bild hinzufügen"
 
-#: .\watermark\templates\watermark\markimage_list.html:14
-msgid "Postion"
-msgstr "Position"
-
-#: .\watermark\templates\watermark\markimage_list.html:15
-msgid "Created"
-msgstr "Erstellt"
-
-#: .\watermark\templates\watermark\markimage_list.html:16
-msgid "Modified"
-msgstr "Bearbeitet"
+#: .\watermark\templates\base.html:22
+msgid "Gallery"
+msgstr "Galerie"
 
 #: .\watermark\templates\watermark\markimage_list.html:18
-msgid "update"
-msgstr "Ändern"
-
-#: .\watermark\templates\watermark\markimage_list.html:19
 msgid "delete"
 msgstr "Löschen"
 
-#: .\watermark\templates\watermark\markimage_list.html:20
-msgid "Download"
-msgstr "Herunterladen"
-
-#: .\watermark\templates\watermark\markimage_list.html:28
+#: .\watermark\templates\watermark\markimage_list.html:50
 msgid "No images are available."
 msgstr "Keine Bilder verfügbar"
+
+#~ msgid "List"
+#~ msgstr "Gallerie"
+
+#~ msgid "Create new watermark image"
+#~ msgstr "Wasserzeichen erstellen"
+
+#~ msgid "Postion"
+#~ msgstr "Position"
+
+#~ msgid "Created"
+#~ msgstr "Erstellt"
+
+#~ msgid "Modified"
+#~ msgstr "Bearbeitet"
+
+#~ msgid "update"
+#~ msgstr "Ändern"
+
+#~ msgid "Download"
+#~ msgstr "Herunterladen"

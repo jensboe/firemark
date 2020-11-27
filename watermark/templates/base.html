@@ -16,10 +16,10 @@
           <ul class="navbar-nav mr-auto">
             {% with request.resolver_match.url_name as url_name %}
             <li class="nav-item {% if url_name == 'create' %}active{% endif %}">
-              <a class="nav-link" href="{% url 'create'%}">{% trans "New Image" %}</a>
+              <a class="nav-link" href="{% url 'create'%}">{% trans "Add new Image" %}</a>
             </li>
             <li class="nav-item {% if url_name == 'index' %}active{% endif %}">
-              <a class="nav-link" href="{% url 'index'%}">{% trans "List" %}</span></a>
+              <a class="nav-link" href="{% url 'index'%}">{% trans "Gallery" %}</span></a>
             </li>
             {% endwith %}
           </ul>

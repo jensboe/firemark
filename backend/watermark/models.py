@@ -55,7 +55,7 @@ class MarkImage(models.Model):
     valign = models.CharField(
         max_length = 2,
         choices = VerticalAlign.choices,
-        default = VerticalAlign.TOP,
+        default = VerticalAlign.BOTTOM,
         verbose_name = _('vertical alignment'),
         help_text = _('position of the watermark')
     )
@@ -63,7 +63,7 @@ class MarkImage(models.Model):
     halign = models.CharField(
         max_length = 2,
         choices = HorizontalAlign.choices,
-        default = HorizontalAlign.LEFT,
+        default = HorizontalAlign.RIGHT,
         verbose_name = _('horizontal alignment'),
         help_text = _('position of the watermark')
     )

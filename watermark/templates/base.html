@@ -8,11 +8,24 @@
     <title>{% trans "Title" %}</title>
   </head>
   <body>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-8">
-          <h1 class="mt-2">{% trans "Title" %}</h1>
-          <hr class="mt-0 mb-4">
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">WaGen</a>
+     
+        <div class="navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'create'%}">Neues Wasserzeichen</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'index'%}">Liste <span class="sr-only">(current)</span></a>
+            </li>
+
+          </ul>
+        </div>
+      </nav>
+      <div class="row justify-content">
+        <div class="col">
           {% block content %}
           {% endblock %}
         </div>

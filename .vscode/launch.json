@@ -19,7 +19,8 @@
             "name": "Python: Django(WITH reload)",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/backend/manage.py",
+            "cwd": "${workspaceFolder}/backend",
+            "program": "manage.py",
             "args": [
                 "runserver"
             ],

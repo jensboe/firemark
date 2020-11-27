@@ -14,13 +14,14 @@
      
         <div class="navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'create'%}">Neues Wasserzeichen</a>
+            {% with request.resolver_match.url_name as url_name %}
+            <li class="nav-item {% if url_name == 'create' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'create'%}">{% trans "New Image" %}</a>
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'index'%}">Liste <span class="sr-only">(current)</span></a>
+            <li class="nav-item {% if url_name == 'index' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'index'%}">{% trans "List" %}</span></a>
             </li>
-
+            {% endwith %}
           </ul>
         </div>
       </nav>

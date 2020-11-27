@@ -1,4 +1,3 @@
 __pycache__
 db.sqlite3
-
-media/wm/*
+backend/media/wm/*

@@ -4,4 +4,4 @@ services:
   web:
     build: .
     image: firemark/www
-    command: python3 backend/manage.py runserver 0.0.0.0:80
+    command: cd backend & python3 manage.py runserver 0.0.0.0:80

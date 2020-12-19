@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 22:45+0100\n"
+"POT-Creation-Date: 2020-12-19 15:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -99,11 +99,19 @@ msgstr "Neues Bild hinzufügen"
 msgid "Gallery"
 msgstr "Galerie"
 
-#: .\watermark\templates\watermark\markimage_list.html:18
-msgid "delete"
+#: .\watermark\templates\watermark\markimage_confirm_delete.html:8
+msgid "Are you sure you want to delete this image?"
+msgstr "Bist du dir sicher das du du das Bild löschen willst?"
+
+#: .\watermark\templates\watermark\markimage_confirm_delete.html:9
+msgid "Delete"
 msgstr "Löschen"
 
-#: .\watermark\templates\watermark\markimage_list.html:50
+#: .\watermark\templates\watermark\markimage_form.html:23
+msgid "Update"
+msgstr "Ändern"
+
+#: .\watermark\templates\watermark\markimage_list.html:51
 msgid "No images are available."
 msgstr "Keine Bilder verfügbar"
 
@@ -124,9 +132,6 @@ msgstr "Keine Bilder verfügbar"
 
 #~ msgid "Modified"
 #~ msgstr "Bearbeitet"
-
-#~ msgid "update"
-#~ msgstr "Ändern"
 
 #~ msgid "Download"
 #~ msgstr "Herunterladen"

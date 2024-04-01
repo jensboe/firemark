@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Create / touch restart.txt for passenger restart
         run: |
-        mkdir backend/tmo
-        touch backend/tmp/restart.txt
+          mkdir backend/tmo
+          touch backend/tmp/restart.txt
       - name: Deploy over FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:

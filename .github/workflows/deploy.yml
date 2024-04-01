@@ -13,7 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+      - name: Touch restart.txt fpr passenger restart
+        run: touch backend/tmp/restart.txt
       - name: Deploy over FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:

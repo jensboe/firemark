@@ -22,4 +22,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /
           local-dir: ./
-          dry-run: true
+          dry-run: false

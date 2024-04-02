@@ -21,6 +21,14 @@ import sys, os
 INTERP = os.environ["HOME"]+MINICONDA_ROOT+"/envs/"+APP_SPECIFIC_VENV+"/bin/"+PYTHON_VERSION
 
 if sys.executable != INTERP:
+
+    # INTERP doesn't match. A perfect opertunity to check if an requirements file exits and we may sould install some packages
+    cur_dir = os.path.dirname(os.path.abspath(__file__))
+    requirements_file = cur_dir + "/requirements.txt"
+    if os.path.isfile(requirements_file):
+        import subprocess
+        subprocess.call([INTERP, '-m', 'pip', 'install', "-r" , requirements_file])
+    # Let' start again with the right environment
     os.execl(INTERP, INTERP, *sys.argv)
 
 """

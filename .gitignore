@@ -1,4 +1,5 @@
 __pycache__
 db.sqlite3
-backend/media/wm/*
+backend/media/wm
 backend/firemark/deploysettings.py
+backend/static

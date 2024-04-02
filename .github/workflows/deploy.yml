@@ -25,7 +25,7 @@ jobs:
         run: python manage.py collectstatic
       - name: Copy static files into httpdocs
         run: |
-          mkdir httpdocs/static
+          mkdir -o httpdocs/static
           cp -r -v backend/static httpdocs/static
       - name: Create / touch restart.txt for passenger restart
         run: |

@@ -40,3 +40,9 @@ jobs:
           server-dir: /
           local-dir: ./
           dry-run: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            fileToExclude.txt
+            **/__pycache__/**

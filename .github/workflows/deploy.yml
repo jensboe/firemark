@@ -3,7 +3,6 @@ name: FTP Deployment
 on:
   push:
     branches:
-      - ci/deploytest
       - main
 
 jobs:

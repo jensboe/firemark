@@ -3,6 +3,7 @@ name: FTP Deployment
 on:
   push:
     branches:
+      - ci/deploytest
       - main
 
 jobs:
@@ -12,12 +13,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+      - name: Create / touch restart.txt for passenger restart
+        run: |
+          mkdir backend/tmp
+          touch backend/tmp/restart.txt
       - name: Deploy over FTP
-        uses: SamKirkland/FTP-Deploy-Action@3.2.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /
           local-dir: ./
+          dry-run: false

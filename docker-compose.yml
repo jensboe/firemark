@@ -1,7 +1,0 @@
-version: '3'
-    
-services:
-  web:
-    build: .
-    image: firemark/www
-    command: python3 backend/manage.py runserver 0.0.0.0:80

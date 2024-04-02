@@ -23,8 +23,10 @@ jobs:
       - name: Create static files
         working-directory: backend
         run: python manage.py collectstatic
-      - name: Copy static files into httpdocs dir
-        run: cp -r -v ./backend/static ./httpdocs/static
+      - name: Copy static files into httpdocs
+        run: |
+          mkdir httpdocs/static
+          cp -r -v backend/static httpdocs/static
       - name: Create / touch restart.txt for passenger restart
         run: |
           mkdir backend/tmp

@@ -26,7 +26,7 @@ jobs:
       - name: Move static files into httpdocs
         run: |
           mkdir -p httpdocs
-          mv -r -v backend/static httpdocs
+          mv backend/static httpdocs
       - name: Create / touch restart.txt for passenger restart
         run: |
           mkdir backend/tmp

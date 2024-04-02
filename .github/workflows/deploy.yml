@@ -22,7 +22,7 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Create static files
         working-directory: backend
-        run: python manage collectstatic
+        run: python manage.py collectstatic
       - name: Copy static files into httpdocs dir
         run: cp -r -v ./backend/static ./httpdocs/static
       - name: Create / touch restart.txt for passenger restart

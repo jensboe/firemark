@@ -1,14 +1,15 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from .models import MarkImage
-from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
-from django.conf import settings
-from PIL import Image, ImageOps
-from PIL.ImageStat import Stat
-import os
+from pathlib import Path
 
-from .utils import wm_resize, wm_pos
+from django.conf import settings
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from PIL import Image, ImageOps
+
+from .models import MarkImage
+from .utils import wm_pos, wm_resize
+
 
 class IndexView(ListView):
     context_object_name = 'imagelist'
@@ -29,21 +30,34 @@ class ImageDeleteView(DeleteView):
     success_url = reverse_lazy('index')
 
 
-def viewImg(request, image_id, marked=True):
+def view_image(request, image_id, insert_wartermark=True):
+    del request
     image = get_object_or_404(MarkImage, pk=image_id)
-    if not os.path.exists(f"{settings.MEDIA_ROOT}wm\\cache\\"):
-        os.mkdir(f"{settings.MEDIA_ROOT}wm\\cache\\")
+    media_root: Path = Path(settings.MEDIA_ROOT)
     try:
-        if marked:
-            cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.wm.id}-{image.halign}-{image.valign}-{image.proportion}-{image.border}.jpg"
-            if not os.path.exists(cachename):
-                with Image.open(settings.MEDIA_ROOT + image.src.name) as org:
+        if insert_wartermark:
+            create_image: bool = True
 
-                    # Do EXIF rotations
-                    org = ImageOps.exif_transpose(org)
+            cache_dir = media_root / 'wm' / 'cache'
+            if not cache_dir.exists():
+                cache_dir.mkdir(parents=True)
 
-                    with Image.open(settings.MEDIA_ROOT + image.wm.src.name) as wm:
-                        wm = wm_resize(org, wm, float(image.proportion/100))
+            marked_image_path = cache_dir / f'{image.id}.jpg'
+            if marked_image_path.exists():
+                last_modify_file = marked_image_path.stat().st_mtime
+                last_modify_db = image.modifiy_time.timestamp()
+
+                if last_modify_file > last_modify_db:
+                    create_image = False
+
+            if create_image:
+                with Image.open(settings.MEDIA_ROOT + image.src.name) as original_image:
+
+                    # Apply EXIF rotation
+                    original_image = ImageOps.exif_transpose(original_image)
+
+                    with Image.open(settings.MEDIA_ROOT + image.wm.src.name) as watermark_image:
+                        watermark_image = wm_resize(original_image, watermark_image, float(image.proportion/100))
                         hpos_rel = 0
                         if image.halign in MarkImage.HorizontalAlign.LEFT:
                             hpos_rel = 0
@@ -58,23 +72,25 @@ def viewImg(request, image_id, marked=True):
                             vpos_rel = 50
                         if image.valign in MarkImage.VerticalAlign.BOTTOM:
                             vpos_rel = 100
-                        target_pos = wm_pos(org, wm, float(image.border/100), float(hpos_rel/100), float(vpos_rel/100)) 
+                        target_pos = wm_pos(original_image, watermark_image, float(image.border/100), float(hpos_rel/100), float(vpos_rel/100))
 
-                        #create new image with alpha channel (transparent)
-                        result = Image.new('RGBA', org.size)
-                        result.paste(org)
+                        # create new image with alpha channel (transparent)
+                        result_image = Image.new('RGBA', original_image.size)
+                        # insert original in result
+                        result_image.paste(original_image)
 
-                        result.paste(wm, target_pos, mask=wm)
-                        # result.show()
-                        #convert to image without alpha channel ()
-                        result = result.convert("RGB")
-                        result.save(cachename)
-                        
-            with open(cachename, "rb") as f:
+                        # insert watermark image in result
+                        result_image.paste(watermark_image, target_pos, mask=watermark_image)
+
+                        # Remove the Alpha channel
+                        result_image = result_image.convert("RGB")
+                        result_image.save(marked_image_path)
+
+            with open(marked_image_path, "rb") as f:
                 return HttpResponse(f.read(), content_type="image/jpeg")
         else:
-            with open(settings.MEDIA_ROOT + image.src.name, "rb") as org:
-                return HttpResponse(org.read(), content_type="image/jpeg")     
+            with open(settings.MEDIA_ROOT + image.src.name, "rb") as original_image:
+                return HttpResponse(original_image.read(), content_type="image/jpeg")
     except IOError:
         red = Image.new('RGB', (1, 1), (255,0,0,0))
         response = HttpResponse(content_type="image/jpeg")

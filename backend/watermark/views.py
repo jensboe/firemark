@@ -38,7 +38,7 @@ def view_image(request, image_id, insert_wartermark=True):
         if insert_wartermark:
             create_image: bool = True
 
-            cache_dir = media_root / 'wm' / 'cache'
+            cache_dir = media_root / 'images' / 'cache'
             if not cache_dir.exists():
                 cache_dir.mkdir(parents=True)
 

@@ -6,7 +6,7 @@ import os
 # Create your models here.
 
 class Watermark(models.Model):
-    src = models.ImageField(upload_to='wm/wm')
+    src = models.ImageField(upload_to='watermarks')
     name = models.CharField(max_length=40)
 
     class Meta:
@@ -32,7 +32,7 @@ class MarkImage(models.Model):
         RIGHT = 'RT', _('right')
 
     src = models.ImageField(
-        upload_to = 'wm/org',
+        upload_to = 'images/org',
         verbose_name = _('Image'),
         help_text = _('Select image which should be watermarked.')
     )

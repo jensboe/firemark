@@ -9,10 +9,17 @@ class Watermark(models.Model):
     src = models.ImageField(upload_to='wm/wm')
     name = models.CharField(max_length=40)
 
+    class Meta:
+        verbose_name = _("watermark")
+        verbose_name_plural = _("watermarks")
+
     def __str__(self):
         return self.name
 
 class MarkImage(models.Model):
+    class Meta:
+        verbose_name = _("markedimage")
+        verbose_name_plural = _("markedimages")
 
     class VerticalAlign(models.TextChoices):
         TOP = 'TP', _('top')

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-19 15:21+0100\n"
+"POT-Creation-Date: 2024-04-03 19:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,76 +18,91 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\watermark\models.py:18
-msgid "top"
-msgstr "Oben"
+#: .\watermark\apps.py:6
+msgid "Firemark"
+msgstr ""
 
-#: .\watermark\models.py:19 .\watermark\models.py:24
-msgid "center"
-msgstr "Mittig"
-
-#: .\watermark\models.py:20
-msgid "bottom"
-msgstr "Unten"
-
-#: .\watermark\models.py:23
-msgid "left"
-msgstr "Links"
-
-#: .\watermark\models.py:25
-msgid "right"
-msgstr "Rechts"
-
-#: .\watermark\models.py:29
-msgid "Image"
-msgstr "Bild"
-
-#: .\watermark\models.py:30
-msgid "Select image which should be watermarked."
-msgstr "Bild auswählen, das ein Wasserzeichen erhalten soll."
-
-#: .\watermark\models.py:34
-msgid "upload time"
-msgstr "Hochladedatum"
-
-#: .\watermark\models.py:38
-msgid "modification time"
-msgstr "Modifikationsdatum"
-
-#: .\watermark\models.py:44
-msgid "proportion"
-msgstr "Verhältnis"
-
-#: .\watermark\models.py:45
-#, fuzzy
-msgid "Propotion between image and watermark. Default is 5."
-msgstr "Verhältnis zwischen Bild und Wasserzeichen. Standardwert ist 5."
-
-#: .\watermark\models.py:51
-msgid "border"
-msgstr "Rand"
-
-#: .\watermark\models.py:52
-msgid "Border in the image. Default is 25."
-msgstr "Abstand zwischen Bild und Wasserzeichen. Standardwert ist 25."
-
-#: .\watermark\models.py:59
-msgid "vertical alignment"
-msgstr "Vertikale Ausrichtung"
-
-#: .\watermark\models.py:60 .\watermark\models.py:68
-msgid "position of the watermark"
-msgstr "Position des Wasserzeichens"
-
-#: .\watermark\models.py:67
-msgid "horizontal alignment"
-msgstr "Horizontale Ausrichtung"
-
-#: .\watermark\models.py:74
+#: .\watermark\models.py:13 .\watermark\models.py:81
 msgid "watermark"
 msgstr "Wasserzeichen"
 
-#: .\watermark\models.py:75
+#: .\watermark\models.py:14
+msgid "watermarks"
+msgstr "Wasserzeichen"
+
+#: .\watermark\models.py:21
+msgid "markedimage"
+msgstr "Bild"
+
+#: .\watermark\models.py:22
+msgid "markedimages"
+msgstr "Bilder"
+
+#: .\watermark\models.py:25
+msgid "top"
+msgstr "Oben"
+
+#: .\watermark\models.py:26 .\watermark\models.py:31
+msgid "center"
+msgstr "Mittig"
+
+#: .\watermark\models.py:27
+msgid "bottom"
+msgstr "Unten"
+
+#: .\watermark\models.py:30
+msgid "left"
+msgstr "Links"
+
+#: .\watermark\models.py:32
+msgid "right"
+msgstr "Rechts"
+
+#: .\watermark\models.py:36
+msgid "Image"
+msgstr "Bild"
+
+#: .\watermark\models.py:37
+msgid "Select image which should be watermarked."
+msgstr "Bild auswählen, das ein Wasserzeichen erhalten soll."
+
+#: .\watermark\models.py:41
+msgid "upload time"
+msgstr "Hochladedatum"
+
+#: .\watermark\models.py:45
+msgid "modification time"
+msgstr "Modifikationsdatum"
+
+#: .\watermark\models.py:51
+msgid "proportion"
+msgstr "Verhältnis"
+
+#: .\watermark\models.py:52
+msgid "Propotion between image and watermark. Default is 5."
+msgstr "Verhältnis zwischen Bild und Wasserzeichen. Standardwert ist 5."
+
+#: .\watermark\models.py:58
+msgid "border"
+msgstr "Rand"
+
+#: .\watermark\models.py:59
+msgid "Border in the image. Default is 25."
+msgstr "Abstand zwischen Bild und Wasserzeichen. Standardwert ist 25."
+
+#: .\watermark\models.py:66
+msgid "vertical alignment"
+msgstr "Vertikale Ausrichtung"
+
+#: .\watermark\models.py:67 .\watermark\models.py:75
+msgid "position of the watermark"
+msgstr "Position des Wasserzeichens"
+
+#: .\watermark\models.py:74
+msgid "horizontal alignment"
+msgstr "Horizontale Ausrichtung"
+
+#: .\watermark\models.py:82
 msgid "Embedded watermark inside the image."
 msgstr "Eingebettest Wasserzeichen im Bild"
 

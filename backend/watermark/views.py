@@ -1,14 +1,15 @@
 from pathlib import Path
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
-from .models import MarkImage
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
-from django.conf import settings
-from PIL import Image, ImageOps
-import os
 
-from .utils import wm_resize, wm_pos
+from django.conf import settings
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from PIL import Image, ImageOps
+
+from .models import MarkImage
+from .utils import wm_pos, wm_resize
+
 
 class IndexView(ListView):
     context_object_name = 'imagelist'
@@ -29,7 +30,8 @@ class ImageDeleteView(DeleteView):
     success_url = reverse_lazy('index')
 
 
-def viewImg(request, image_id, insert_wartermark=True):
+def view_image(request, image_id, insert_wartermark=True):
+    del request
     image = get_object_or_404(MarkImage, pk=image_id)
     media_root: Path = Path(settings.MEDIA_ROOT)
     try:
@@ -70,7 +72,7 @@ def viewImg(request, image_id, insert_wartermark=True):
                             vpos_rel = 50
                         if image.valign in MarkImage.VerticalAlign.BOTTOM:
                             vpos_rel = 100
-                        target_pos = wm_pos(original_image, watermark_image, float(image.border/100), float(hpos_rel/100), float(vpos_rel/100)) 
+                        target_pos = wm_pos(original_image, watermark_image, float(image.border/100), float(hpos_rel/100), float(vpos_rel/100))
 
                         # create new image with alpha channel (transparent)
                         result_image = Image.new('RGBA', original_image.size)
@@ -79,11 +81,11 @@ def viewImg(request, image_id, insert_wartermark=True):
 
                         # insert watermark image in result
                         result_image.paste(watermark_image, target_pos, mask=watermark_image)
-                        
+
                         # Remove the Alpha channel
                         result_image = result_image.convert("RGB")
                         result_image.save(marked_image_path)
-                        
+
             with open(marked_image_path, "rb") as f:
                 return HttpResponse(f.read(), content_type="image/jpeg")
         else:

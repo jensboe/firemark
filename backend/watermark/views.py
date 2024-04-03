@@ -1,3 +1,4 @@
+from pathlib import Path
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from .models import MarkImage
@@ -28,14 +29,26 @@ class ImageDeleteView(DeleteView):
     success_url = reverse_lazy('index')
 
 
-def viewImg(request, image_id, marked=True):
+def viewImg(request, image_id, insert_wartermark=True):
     image = get_object_or_404(MarkImage, pk=image_id)
-    if not os.path.exists(f"{settings.MEDIA_ROOT}wm\\cache\\"):
-        os.mkdir(f"{settings.MEDIA_ROOT}wm\\cache\\")
+    media_root: Path = Path(settings.MEDIA_ROOT)
     try:
-        if marked:
-            cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.wm.id}-{image.halign}-{image.valign}-{image.proportion}-{image.border}.jpg"
-            if not os.path.exists(cachename):
+        if insert_wartermark:
+            create_image: bool = True
+
+            cache_dir = media_root / 'wm' / 'cache'
+            if not cache_dir.exists():
+                cache_dir.mkdir(parents=True)
+
+            marked_image_path = cache_dir / f'{image.id}.jpg'
+            if marked_image_path.exists():
+                last_modify_file = marked_image_path.stat().st_mtime
+                last_modify_db = image.modifiy_time.timestamp()
+
+                if last_modify_file > last_modify_db:
+                    create_image = False
+
+            if create_image:
                 with Image.open(settings.MEDIA_ROOT + image.src.name) as original_image:
 
                     # Apply EXIF rotation
@@ -69,13 +82,13 @@ def viewImg(request, image_id, marked=True):
                         
                         # Remove the Alpha channel
                         result_image = result_image.convert("RGB")
-                        result_image.save(cachename)
+                        result_image.save(marked_image_path)
                         
-            with open(cachename, "rb") as f:
+            with open(marked_image_path, "rb") as f:
                 return HttpResponse(f.read(), content_type="image/jpeg")
         else:
             with open(settings.MEDIA_ROOT + image.src.name, "rb") as original_image:
-                return HttpResponse(original_image.read(), content_type="image/jpeg")     
+                return HttpResponse(original_image.read(), content_type="image/jpeg")
     except IOError:
         red = Image.new('RGB', (1, 1), (255,0,0,0))
         response = HttpResponse(content_type="image/jpeg")

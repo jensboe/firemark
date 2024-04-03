@@ -1,11 +1,10 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 from .models import MarkImage
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.conf import settings
 from PIL import Image, ImageOps
-from PIL.ImageStat import Stat
 import os
 
 from .utils import wm_resize, wm_pos
@@ -37,13 +36,13 @@ def viewImg(request, image_id, marked=True):
         if marked:
             cachename = f"{settings.MEDIA_ROOT}wm\\cache\\{image.id}-{image.wm.id}-{image.halign}-{image.valign}-{image.proportion}-{image.border}.jpg"
             if not os.path.exists(cachename):
-                with Image.open(settings.MEDIA_ROOT + image.src.name) as org:
+                with Image.open(settings.MEDIA_ROOT + image.src.name) as original_image:
 
-                    # Do EXIF rotations
-                    org = ImageOps.exif_transpose(org)
+                    # Apply EXIF rotation
+                    original_image = ImageOps.exif_transpose(original_image)
 
-                    with Image.open(settings.MEDIA_ROOT + image.wm.src.name) as wm:
-                        wm = wm_resize(org, wm, float(image.proportion/100))
+                    with Image.open(settings.MEDIA_ROOT + image.wm.src.name) as watermark_image:
+                        watermark_image = wm_resize(original_image, watermark_image, float(image.proportion/100))
                         hpos_rel = 0
                         if image.halign in MarkImage.HorizontalAlign.LEFT:
                             hpos_rel = 0
@@ -58,23 +57,25 @@ def viewImg(request, image_id, marked=True):
                             vpos_rel = 50
                         if image.valign in MarkImage.VerticalAlign.BOTTOM:
                             vpos_rel = 100
-                        target_pos = wm_pos(org, wm, float(image.border/100), float(hpos_rel/100), float(vpos_rel/100)) 
+                        target_pos = wm_pos(original_image, watermark_image, float(image.border/100), float(hpos_rel/100), float(vpos_rel/100)) 
 
-                        #create new image with alpha channel (transparent)
-                        result = Image.new('RGBA', org.size)
-                        result.paste(org)
+                        # create new image with alpha channel (transparent)
+                        result_image = Image.new('RGBA', original_image.size)
+                        # insert original in result
+                        result_image.paste(original_image)
 
-                        result.paste(wm, target_pos, mask=wm)
-                        # result.show()
-                        #convert to image without alpha channel ()
-                        result = result.convert("RGB")
-                        result.save(cachename)
+                        # insert watermark image in result
+                        result_image.paste(watermark_image, target_pos, mask=watermark_image)
+                        
+                        # Remove the Alpha channel
+                        result_image = result_image.convert("RGB")
+                        result_image.save(cachename)
                         
             with open(cachename, "rb") as f:
                 return HttpResponse(f.read(), content_type="image/jpeg")
         else:
-            with open(settings.MEDIA_ROOT + image.src.name, "rb") as org:
-                return HttpResponse(org.read(), content_type="image/jpeg")     
+            with open(settings.MEDIA_ROOT + image.src.name, "rb") as original_image:
+                return HttpResponse(original_image.read(), content_type="image/jpeg")     
     except IOError:
         red = Image.new('RGB', (1, 1), (255,0,0,0))
         response = HttpResponse(content_type="image/jpeg")

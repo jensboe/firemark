@@ -14,7 +14,7 @@ class Watermark(models.Model):
         verbose_name_plural = _("watermarks")
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class MarkImage(models.Model):
     class Meta:

@@ -4,7 +4,7 @@ import { ImageEditor } from './image-editor/image-editor';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, ImageEditor],
+    imports: [ImageEditor],
     templateUrl: './app.html',
     styleUrl: './app.css'
 })

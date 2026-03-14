@@ -1,2 +1,5 @@
-<p>image-editor works!</p>
-<canvas id="canvas"></canvas>
+<div class="image-editor">
+    <h2>Edit image</h2>
+    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+    <canvas #canvas></canvas>
+</div>

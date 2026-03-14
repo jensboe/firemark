@@ -1,19 +1,54 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatRadioModule } from '@angular/material/radio';
+import { FormsModule } from '@angular/forms';
 import * as fabric from 'fabric';
-
 @Component({
     selector: 'app-image-editor',
-    imports: [CommonModule],
+    imports: [CommonModule,
+        MatIconModule,
+        MatButton,
+        MatExpansionModule,
+        MatStepperModule,
+        MatRadioModule,
+        FormsModule
+    ],
     templateUrl: './image-editor.html',
     styleUrl: './image-editor.css',
 })
 export class ImageEditor implements AfterViewInit {
     @ViewChild('canvas', { static: false }) canvasElement!: ElementRef<HTMLCanvasElement>;
+    fileName = '';
     canvas!: fabric.Canvas;
     image!: fabric.FabricImage;
-    watermark!: fabric.FabricImage;
+    watermark_image!: fabric.FabricImage;
+    watermark_pos = 'bottom_left'
 
+    watermark_positions: [string, string][] = [
+        ['', 'bottom left'],
+        ['', 'bottom right'],
+        ['', 'top left'],
+        ['', 'top right'],
+    ];
+
+    selected_ratio = '1:1';
+    ratios: [string, string][] = [
+        ['crop_original', 'org'],
+        ['crop_free', 'free'],
+        ['crop_square', '1:1'],
+        ['crop_16_9', '16:9'],
+        ['crop_3_2', '3:2'],
+        ['crop_5_4', '5:4'],
+        ['crop_7_5', '7:5'],
+        ['crop_portrait', '9:16'],
+        ['crop_portrait', '2:3'],
+        ['crop_portrait', '4:5'],
+        ['crop_portrait', '5:7'],
+    ];
     ngAfterViewInit() {
         this.canvas = new fabric.Canvas(this.canvasElement.nativeElement, {
             width: 800,
@@ -23,7 +58,7 @@ export class ImageEditor implements AfterViewInit {
 
     private getMaxCanvasSize() {
         return {
-            width: window.innerWidth * 0.9,
+            width: window.innerWidth * 1,
             height: window.innerHeight * 0.75,
         };
     }
@@ -35,8 +70,8 @@ export class ImageEditor implements AfterViewInit {
 
     private async loadWatermark() {
         try {
-            this.watermark = await fabric.FabricImage.fromURL('/assets/watermark.png');
-            this.watermark.set({
+            this.watermark_image = await fabric.FabricImage.fromURL('/assets/watermark.png');
+            this.watermark_image.set({
                 originX: 'center',
                 originY: 'center',
                 left: this.canvas.getWidth() * 0.9,
@@ -44,7 +79,7 @@ export class ImageEditor implements AfterViewInit {
                 selectable: false,
                 evented: false,
             });
-            this.canvas.add(this.watermark);
+            this.canvas.add(this.watermark_image);
             this.canvas.renderAll();
         } catch (error) {
             console.error('Cant load watermark', error);
@@ -54,11 +89,12 @@ export class ImageEditor implements AfterViewInit {
     onFileSelected(event: Event) {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (file) {
+            this.fileName = file.name;
             if (this.image) {
                 this.canvas.remove(this.image);
             }
-            if (this.watermark) {
-                this.canvas.remove(this.watermark);
+            if (this.watermark_image) {
+                this.canvas.remove(this.watermark_image);
             }
             const reader = new FileReader();
             reader.onload = async (e) => {

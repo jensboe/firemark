@@ -41,19 +41,12 @@ export class ImageEditor implements AfterViewInit {
         ['', 'top right'],
     ];
 
-    selected_ratio = '1:1';
-    ratios: [string, string][] = [
-        ['crop_original', 'org'],
-        ['crop_free', 'free'],
-        ['crop_square', '1:1'],
-        ['crop_16_9', '16:9'],
-        ['crop_3_2', '3:2'],
-        ['crop_5_4', '5:4'],
-        ['crop_7_5', '7:5'],
-        ['crop_portrait', '9:16'],
-        ['crop_portrait', '2:3'],
-        ['crop_portrait', '4:5'],
-        ['crop_portrait', '5:7'],
+    selected_ratio = '3:4 (Insta Image)';
+    ratios: [string, string, number][] = [
+        ['crop_landscape', '1.91:1 (Insta Image)', 1.91],
+        ['crop_square', '1:1 (Insta Image)', 1],
+        ['crop_portrait', '3:4 (Insta Image)', 3.0 / 4.0],
+        ['crop_portrait', '9:16 (Insta Reel or story)', 9.0 / 16.0],
     ];
     ngAfterViewInit() {
         this.canvas = new fabric.Canvas(this.canvasElement.nativeElement);

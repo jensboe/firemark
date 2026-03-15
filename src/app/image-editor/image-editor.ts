@@ -8,6 +8,7 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import * as fabric from 'fabric';
+
 @Component({
     selector: 'app-image-editor',
     imports: [CommonModule,
@@ -84,7 +85,6 @@ export class ImageEditor implements AfterViewInit {
                     height: 0,
 
                 });
-                this.canvas.add(this.new_blurr);
             });
             this.canvas.on('mouse:up', (e) => {
                 if (!this.new_blurr) return;
@@ -108,10 +108,10 @@ export class ImageEditor implements AfterViewInit {
                     height: Math.abs(height),
                     left: (pointer.x + this.new_blurr.left) / 2,
                     top: (pointer.y + this.new_blurr.top) / 2,
-                    fill: 'rgba(0,0,0,0.9)',
+                    fill: 'transparent',
                     selectable: true
                 });
-
+                this.applyBlur(this.new_blurr);
                 this.canvas.renderAll();
             });
         }
@@ -123,6 +123,53 @@ export class ImageEditor implements AfterViewInit {
             });
             this.canvas.off()
         }
+    }
+    async applyBlur(rect: fabric.Rect) {
+        const bounds = rect.getBoundingRect();
+        console.log("applyBlur");
+
+        // CPU-based pixelation to avoid WebGL issues
+        const blocksize = 12;
+        const img = new Image();
+        img.src = this.canvas.toDataURL({
+            left: bounds.left,
+            top: bounds.top,
+            width: bounds.width,
+            height: bounds.height,
+            multiplier: 1
+        });
+
+        img.onload = () => {
+            const smallCanvas = document.createElement('canvas');
+            const smallCtx = smallCanvas.getContext('2d')!;
+            smallCanvas.width = Math.floor(bounds.width / blocksize);
+            smallCanvas.height = Math.floor(bounds.height / blocksize);
+            smallCtx.drawImage(img, 0, 0, smallCanvas.width, smallCanvas.height);
+
+            const largeCanvas = document.createElement('canvas');
+            const largeCtx = largeCanvas.getContext('2d')!;
+            largeCanvas.width = bounds.width;
+            largeCanvas.height = bounds.height;
+            largeCtx.imageSmoothingEnabled = false; // Disable smoothing for pixelation
+            largeCtx.drawImage(smallCanvas, 0, 0, largeCanvas.width, largeCanvas.height);
+
+            const pixelatedDataURL = largeCanvas.toDataURL();
+
+            fabric.FabricImage.fromURL(pixelatedDataURL).then((pixelatedImage) => {
+                pixelatedImage.set({
+                    left: bounds.left,
+                    top: bounds.top,
+                    width: bounds.width,
+                    height: bounds.height,
+                    originX: 'left',
+                    originY: 'top',
+                    selectable: true,
+                    evented: true
+                });
+                this.canvas.add(pixelatedImage);
+                this.canvas.renderAll();
+            });
+        };
     }
 
     onRatioChange() {

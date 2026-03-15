@@ -1,3 +1,16 @@
 .file-input {
     display: none;
 }
+
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.preview {
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    background: pink;
+}

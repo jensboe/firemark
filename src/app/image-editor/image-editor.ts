@@ -57,6 +57,20 @@ export class ImageEditor implements AfterViewInit {
             this.applyCrop();
         } else {
         }
+        if (event.selectedIndex > 2) {
+            if (!this.cropRect) return;
+            this.cropRect.set({
+                selectable: false,
+                evented: false,
+            });
+        }
+        else {
+            if (!this.cropRect) return;
+            this.cropRect.set({
+                selectable: true,
+                evented: true,
+            });
+        }
     }
 
     onRatioChange() {

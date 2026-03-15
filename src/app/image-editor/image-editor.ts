@@ -29,17 +29,17 @@ export class ImageEditor implements AfterViewInit {
     canvas!: fabric.Canvas;
     image!: fabric.FabricImage;
     watermark_image!: fabric.FabricImage | null;
-    watermark_pos = 'bottom_left'
 
     cropRect: fabric.Rect | null = null;
     overlay: fabric.Rect | null = null;
 
-    watermark_positions: [string, string][] = [
-        ['', 'bottom left'],
-        ['', 'bottom right'],
-        ['', 'top left'],
-        ['', 'top right'],
+    watermark_positions: { label: string; halign: number; valign: number }[] = [
+        { label: 'top left', halign: -1, valign: -1 },
+        { label: 'top right', halign: 1, valign: -1 },
+        { label: 'bottom left', halign: -1, valign: 1 },
+        { label: 'bottom right', halign: 1, valign: 1 },
     ];
+    watermark_pos = this.watermark_positions[2];
 
     selected_ratio = '3:4 (Insta Image)';
     ratios: [string, string, number][] = [
@@ -63,6 +63,9 @@ export class ImageEditor implements AfterViewInit {
         if (this.stepper.selectedIndex === 1) {
             this.applyCrop();
         }
+    }
+    onWaterMarkPosChange() {
+        this.updateWatermark();
     }
 
     private applyCrop() {
@@ -198,22 +201,42 @@ export class ImageEditor implements AfterViewInit {
 
 
     private updateWatermark() {
-        if (!this.watermark_image) return
+        if (!this.watermark_image) return;
         if (!this.cropRect) return;
-        const cropped = this.cropRect
 
+        const bounds = this.cropRect.getBoundingRect();
+
+        const proportion = 0.05;
+        const halign = this.watermark_pos.halign;
+        const valign = this.watermark_pos.valign;
+        const border = 0.25;
+
+        const orgWidth = bounds.width;
+        const orgHeight = bounds.height;
+
+        const areaOrg = orgWidth * orgHeight;
+        const areaWm = this.watermark_image.width * this.watermark_image.height;
+
+        const areaTarget = areaOrg * proportion;
+        const scale = Math.sqrt(areaTarget / areaWm);
+
+        this.watermark_image.scale(scale);
+
+        const wmWidth = this.watermark_image.width * scale;
+        const wmHeight = this.watermark_image.height * scale;
+
+        const wmBorder = wmHeight * border;
+
+
+        const left = bounds.left + (bounds.width) / 2 + halign * ((bounds.width - wmWidth) / 2 - wmBorder);
+        const top = bounds.top + (bounds.height) / 2 + valign * ((bounds.height - wmHeight) / 2 - wmBorder);
 
         this.watermark_image.set({
-            left: cropped.left + (0.9 * cropped.width * cropped.scaleX) / 2 - this.watermark_image.width / 2,
-            top: cropped.top + (0.9 * cropped.height * cropped.scaleY) / 2 - this.watermark_image.height / 2,
-            selectable: false,
-            evented: false,
+            left,
+            top
         });
-        console.log('Cropped left ' + cropped.left)
-        console.log('watermark left ' + this.watermark_image.left)
-        console.log('cropped width ' + cropped.width)
+        this.canvas.bringObjectToFront(this.watermark_image);
         this.canvas.renderAll();
-
     }
 
     onFileSelected(event: Event) {

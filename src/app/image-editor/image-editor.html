@@ -20,10 +20,10 @@
         </mat-step>
         <mat-step>
             <ng-template matStepLabel><mat-icon>pin_drop</mat-icon>place watermark</ng-template>
-            <mat-radio-group [(ngModel)]="selected_ratio">
+            <mat-radio-group [(ngModel)]="watermark_pos" (ngModelChange)="onWaterMarkPosChange()">
                 @for (pos of watermark_positions; track pos) {
-                <mat-radio-button class="example-radio-button"
-                    [value]="pos[1]"><mat-icon>{{pos[0]}}</mat-icon>{{pos[1]}}
+                <mat-radio-button class="example-radio-button" [value]="pos">
+                    {{ pos.label }}
                 </mat-radio-button>
                 }
             </mat-radio-group>

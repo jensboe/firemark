@@ -157,6 +157,7 @@ export class ImageEditor implements AfterViewInit {
 
         this.canvas.add(this.cropRect);
         this.canvas.add(this.overlay);
+        this.updateClip()
         this.canvas.renderAll();
         this.cropRect.on('moving', () => this.updateClip());
         this.cropRect.on('scaling', () => this.updateClip());
@@ -246,7 +247,7 @@ export class ImageEditor implements AfterViewInit {
                     evented: false,
                 });
                 this.canvas.add(this.image);
-                this.loadWatermark();
+                await this.loadWatermark();
                 this.canvas.renderAll();
                 this.stepper.next();
             };

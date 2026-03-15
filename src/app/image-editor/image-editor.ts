@@ -28,7 +28,7 @@ export class ImageEditor implements AfterViewInit {
     fileName = '';
     canvas!: fabric.Canvas;
     image!: fabric.FabricImage;
-    watermark_image!: fabric.FabricImage;
+    watermark_image!: fabric.FabricImage | null;
     watermark_pos = 'bottom_left'
 
     cropRect: fabric.Rect | null = null;
@@ -161,6 +161,7 @@ export class ImageEditor implements AfterViewInit {
         this.cropRect.on('moving', () => this.updateClip());
         this.cropRect.on('scaling', () => this.updateClip());
     }
+
     private updateClip() {
         if (!this.cropRect) return
         if (!this.overlay) return
@@ -173,32 +174,45 @@ export class ImageEditor implements AfterViewInit {
             width: rect.width * rect.scaleX,
             height: rect.height * rect.scaleY
         });
+        this.updateWatermark()
 
-        this.canvas.requestRenderAll();
+        this.canvas.renderAll();
     }
 
     private resizeCanvas(width: number, height: number) {
         this.canvas.setDimensions({ width, height }, { cssOnly: false });
         this.canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
     }
-
-
     private async loadWatermark() {
-        try {
-            this.watermark_image = await fabric.FabricImage.fromURL('/assets/watermark.png');
-            this.watermark_image.set({
-                originX: 'center',
-                originY: 'center',
-                left: this.canvas.getWidth() * 0.9,
-                top: this.canvas.getHeight() * 0.9,
-                selectable: false,
-                evented: false,
-            });
-            this.canvas.add(this.watermark_image);
-            this.canvas.renderAll();
-        } catch (error) {
-            console.error('Cant load watermark', error);
-        }
+        if (this.watermark_image) return
+        this.watermark_image = await fabric.FabricImage.fromURL('/assets/watermark.png');
+        this.watermark_image.set({
+            left: 0,
+            top: 0,
+            selectable: false,
+            evented: false,
+        });
+        this.canvas.add(this.watermark_image);
+    }
+
+
+    private updateWatermark() {
+        if (!this.watermark_image) return
+        if (!this.cropRect) return;
+        const cropped = this.cropRect
+
+
+        this.watermark_image.set({
+            left: cropped.left + (0.9 * cropped.width * cropped.scaleX) / 2 - this.watermark_image.width / 2,
+            top: cropped.top + (0.9 * cropped.height * cropped.scaleY) / 2 - this.watermark_image.height / 2,
+            selectable: false,
+            evented: false,
+        });
+        console.log('Cropped left ' + cropped.left)
+        console.log('watermark left ' + this.watermark_image.left)
+        console.log('cropped width ' + cropped.width)
+        this.canvas.renderAll();
+
     }
 
     onFileSelected(event: Event) {
@@ -232,6 +246,7 @@ export class ImageEditor implements AfterViewInit {
                     evented: false,
                 });
                 this.canvas.add(this.image);
+                this.loadWatermark();
                 this.canvas.renderAll();
                 this.stepper.next();
             };

@@ -33,6 +33,10 @@ export class ImageEditor implements AfterViewInit {
     cropRect: fabric.Rect | null = null;
     overlay: fabric.Rect | null = null;
 
+    new_blurr: fabric.Rect | null = null;
+    add_area: boolean = false;
+    adding_area: boolean = false;
+
     watermark_positions: { label: string; halign: number; valign: number }[] = [
         { label: 'top left', halign: -1, valign: -1 },
         { label: 'top right', halign: 1, valign: -1 },
@@ -63,6 +67,53 @@ export class ImageEditor implements AfterViewInit {
                 selectable: false,
                 evented: false,
             });
+            this.canvas.on('mouse:down', (e) => {
+                const pointer = e.scenePoint
+                if (!this.add_area) return;
+                this.add_area = false;
+                this.adding_area = true
+                const startX = pointer.x;
+                const startY = pointer.y;
+                console.log("click x: " + pointer.x);
+                console.log("click y: " + pointer.y);
+
+                this.new_blurr = new fabric.Rect({
+                    left: startX,
+                    top: startY,
+                    width: 0,
+                    height: 0,
+
+                });
+                this.canvas.add(this.new_blurr);
+            });
+            this.canvas.on('mouse:up', (e) => {
+                if (!this.new_blurr) return;
+                if (!this.adding_area) return
+
+                this.adding_area = false;
+                const pointer = e.scenePoint;
+
+                console.log("click2 x: " + pointer.x);
+                console.log("click2 y: " + pointer.y);
+                console.log("start x: " + this.new_blurr.left);
+                console.log("start y: " + this.new_blurr.top);
+
+                const width = pointer.x - this.new_blurr.left;
+                const height = pointer.y - this.new_blurr.top;
+                console.log("width: " + width);
+                console.log("height: " + height);
+
+                this.new_blurr.set({
+                    width: Math.abs(width),
+                    height: Math.abs(height),
+                    left: (pointer.x + this.new_blurr.left) / 2,
+                    top: (pointer.y + this.new_blurr.top) / 2,
+                    fill: 'rgba(0,0,0,0.9)',
+                    selectable: true
+                });
+
+                this.canvas.renderAll();
+            });
         }
         else {
             if (!this.cropRect) return;
@@ -70,6 +121,7 @@ export class ImageEditor implements AfterViewInit {
                 selectable: true,
                 evented: true,
             });
+            this.canvas.off()
         }
     }
 

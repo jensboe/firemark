@@ -1,0 +1,42 @@
+<div class="editor-container">
+    <mat-stepper [linear]="true" #editstepper (selectionChange)="onStepChange($event)">
+        <mat-step>
+            <ng-template matStepLabel><mat-icon>file_upload</mat-icon>file upload</ng-template>
+            <input type="file" class="file-input" accept="image/*" (change)="onFileSelected($event)" #fileUpload />
+            <div class="file-upload">
+                <button matButton="filled" (click)="fileUpload.click()">
+                    <mat-icon>attach_file</mat-icon> {{fileName || "No file uploaded yet."}}
+                </button>
+            </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel><mat-icon>crop</mat-icon>crop</ng-template>
+            <mat-radio-group [(ngModel)]="selected_ratio" (ngModelChange)="onRatioChange()">
+                @for (ratio of ratios; track ratio) {
+                <mat-radio-button class="example-radio-button"
+                    [value]="ratio[1]"><mat-icon>{{ratio[0]}}</mat-icon>{{ratio[1]}} </mat-radio-button>
+                }
+            </mat-radio-group>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel><mat-icon>pin_drop</mat-icon>place watermark</ng-template>
+            <mat-radio-group [(ngModel)]="watermark_pos" (ngModelChange)="onWaterMarkPosChange()">
+                @for (pos of watermark_positions; track pos) {
+                <mat-radio-button class="example-radio-button" [value]="pos">
+                    {{ pos.label }}
+                </mat-radio-button>
+                }
+            </mat-radio-group>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel><mat-icon>blur_on</mat-icon>blur areas</ng-template>
+            <button matButton="filled" (click)="add_area=true"><mat-icon>texture</mat-icon>add area</button>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel><mat-icon>done</mat-icon>done.</ng-template>
+        </mat-step>
+    </mat-stepper>
+    <div class="preview">
+        <canvas #canvas></canvas>
+    </div>
+</div>
